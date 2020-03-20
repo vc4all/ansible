@@ -1,0 +1,12 @@
+all:
+  hosts:
+    quiet-gibson.webschuur.com:
+      # force use of python 3 on ubuntu 18.04
+      # https://stackoverflow.com/a/41431540/73673
+      ansible_python_interpreter: /usr/bin/python3
+ubuntu:
+  hosts:
+    quiet-gibson.webschuur.com:
+jitsi:
+  hosts:
+    quiet-gibson.webschuur.com:

@@ -1,0 +1,26 @@
+---
+  - name: Create admin group
+    group:
+      name: admin
+  - name: Create user groups
+    group:
+      name: "{{ item.key }}"
+    with_dict: "{{ users }}"
+  - name: Create users
+    user:
+      name: "{{ item.key }}"
+      comment: "{{ item.value.name }}"
+      createhome: yes
+      shell: /bin/bash
+      password: "{{ item.value.password }}"
+      group: "{{ item.key }}"
+      groups:
+        - "{{ item.key }}"
+        - admin
+    with_dict: "{{ users }}"
+  - name: Set authorized keys from urls
+    authorized_key:
+      user: "{{ item.key }}"
+      state: present
+      key: "{{ item.value.key }}"
+    with_dict: "{{ users }}"
