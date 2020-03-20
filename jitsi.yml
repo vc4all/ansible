@@ -1,0 +1,16 @@
+##
+# Installs jitsi services and a SSL enabled nginx as proxy.
+---
+- hosts: jitsi
+  become: "yes"
+  roles:
+    - base
+    - jitsi_firewall
+    - cimnine.jitsi_meet # Depends on geerlinguy.certbot.
+
+  tasks:
+    - name: "GoAccess: install package"
+      apt:
+        name: goaccess
+        update_cache: yes
+        state: present

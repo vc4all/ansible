@@ -1,0 +1,26 @@
+# Group vars for the group ubuntu.
+---
+users:
+  ber:
+    name: "Bèr Kessels"
+    key: https://github.com/berkes.keys
+    password: "{{ vault_enabled_users.ber.password }}"
+deploy_keys:
+  - https://github.com/berkes.keys
+
+swapfile_file: "/swap"
+swapfile_size: "1G"
+
+firewall_blacklist:
+firewall_remove_blacklist:
+
+additional_packages:
+  - nethogs
+
+apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
+jitsi_domain: meet.webschuur.com
+certbot_enabled: true
+certbot_admin_email: ber@berk.es
+jitsi_nat: false
+jitsi_nat_public_ip: 167.172.38.115 # quiet-gibson.webschuur.com
+jitsi_nat_private_ip: 10.133.59.8

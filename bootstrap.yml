@@ -1,0 +1,15 @@
+##
+# Ran only once ever to bootstrap the server so that we can run ansible on it.
+#
+# This is the only playbook that must be ran as root.
+---
+- hosts: all
+  remote_user: root
+  gather_facts: no
+  pre_tasks:
+    - name: 'install python'
+      raw: sudo apt-get update && sudo apt-get -y install python-simplejson
+    # Now gather the facts again.
+    - action: setup
+  roles:
+    - sysadmins
