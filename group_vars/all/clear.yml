@@ -18,9 +18,14 @@ additional_packages:
   - nethogs
 
 apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
-jitsi_domain: meet.webschuur.com
+
+jitsi_domain: reliable-vinci.asp4all.nl
+main_domain: asp4all.nl
+
+## Jitsi role needs this.
 certbot_enabled: true
 certbot_admin_email: ber@berk.es
+
 jitsi_nat: false
 jitsi_nat_public_ip: 167.172.38.115 # quiet-gibson.webschuur.com
 jitsi_nat_private_ip: 10.133.59.8
