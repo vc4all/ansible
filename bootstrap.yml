@@ -4,7 +4,8 @@
 # This is the only playbook that must be ran as root.
 ---
 - hosts: all
-  remote_user: root
+  remote_user: beheerder
+  become: "yes"
   gather_facts: no
   pre_tasks:
     - name: 'install python'

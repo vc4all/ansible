@@ -24,6 +24,23 @@ This is configured in `ansible.cfg` file.
 
 ## Quickstart
 
+### Boostrap
+
+Given a clean default server with ubuntu 18.04, an initial user called
+"beheerder", run the following:
+
+```bash
+ansible-playbook bootstrap.yml --ask-pass -c paramiko --ask-become-pass
+```
+
+Ask pass, and ask become pass is needed because on bootstrapping we
+don't have all the ssh config set up yet. This is what the boostrapping
+does.
+
+-c paramiko is needed because, somehow, the version of ssh as provided
+by the default install of Ubuntu on Transip is a tad weird and we run
+into this issue: https://github.com/ansible/ansible/issues/14426
+
 ### Install
 
 ### Run

@@ -21,16 +21,17 @@ firewall_remove_blacklist:
 
 additional_packages:
   - nethogs
+  - nginx # jitsi_firewall needs nginx to access the ufw profile
 
 apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
 
-jitsi_domain: beeldbellen.asp4all.nl
-main_domain: asp4all.nl
+jitsi_domain: beeldbellen.vc4all.nl
+main_domain: vc4all.nl
 
 ## Jitsi role needs this.
 certbot_enabled: true
 certbot_admin_email: ber@berk.es
 
 jitsi_nat: false
-jitsi_nat_public_ip: 167.172.38.115 # quiet-gibson.webschuur.com
+jitsi_nat_public_ip: 136.144.205.16 # quiet-gibson.webschuur.com
 jitsi_nat_private_ip: 10.133.59.8
