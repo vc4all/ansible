@@ -25,7 +25,7 @@ additional_packages:
 
 apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
 
-jitsi_domain: beeldbellen.asp4all.nl
+jitsi_domain: beeldbellen.vc4all.nl
 main_domain: asp4all.nl
 
 ## Jitsi role needs this.
