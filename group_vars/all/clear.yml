@@ -5,6 +5,11 @@ users:
     name: "Bèr Kessels"
     key: https://github.com/berkes.keys
     password: "{{ vault_enabled_users.ber.password }}"
+  bjorn:
+    name: "Bjorn Wijers"
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDR+fE8bfiPx0Ae/5HjmsYcb3xvI/7Zs3zMebUi9/M4qxV01sYWncqjCHqSctW7Yz9wYINR1UMsTAWUf/JLUxQaBBqnZnwEwlTF601l8U/Z6neeL9GhRscbsCGYnGUuTZX5KrApOLAKm1iCL+C0Rqh/UIH+cnOxs0o2giQVCj5MpvywEU9TOtL0sK5u1XzUEGAcfvTvgnl0X9xAx5C7jAPm3Efnyf3idlm+A7rMv3wGR/LT7KVHzYxcWByMQoLSlXZ0ia881Ed3UDHlad06u1LmdJ7K/ljSIE8EpRfJaNZ9WC6IkiBlNN21SyRv81TG8S05HUOEuAlLkRVF/TIdQOQmmwuB61d1GCbDF8Eo+8F6Qwpr7fkVYmp11P/9FQZ4UP0s9wiT84/pqaedKHrppuqWGfV7vpheYNWEw626gLrjSHkrm3zj0fuUFB+hNM+MJ64IF53UMWLaODpxiG5pUqoaoopSfnogwMBtUHl7Jq9kRV7SD/6+QKAZO9wbr9fvTq9OuwGtzI/CQx1xFDVNwYblgQJB+azt43OpW8AYTvFbj0PERa7TBIHmQZlE1ixUOhdoeI0+9x+F4H5/jCRCl+Vlbztk+Hd8mDHeAlgEw/nsqEN+TDbWW/lYdBtKALdUS91PiMWM1Ef27LGxnc3+z8xr5XmBWAm8H9Kmad7onRKmRw== burobjorn@burobjorn.nl"
+    password: "{{ vault_enabled_users.bjorn.password }}"
+
 deploy_keys:
   - https://github.com/berkes.keys
 
