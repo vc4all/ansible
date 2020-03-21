@@ -18,6 +18,12 @@
       state: present
       update_cache: yes
 
+  - name: Install additional packages
+    apt:
+      name: "{{ additional_packages }}"
+      state: present
+      update_cache: yes
+
   - name: "Firewall: allow ssh"
     ufw:
       rule: allow

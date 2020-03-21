@@ -21,6 +21,7 @@ firewall_remove_blacklist:
 
 additional_packages:
   - nethogs
+  - nginx # jitsi_firewall needs nginx to access the ufw profile
 
 apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
 
