@@ -13,4 +13,110 @@
       apt:
         name: goaccess
         update_cache: yes
+
+    - name: "Deploy user: create group"
+      group:
+        name: deploy
+    - name: "Deploy user: create user"
+      user:
+        name: deploy
+        group: deploy
+    - name: "Deploy user: set authorized keys"
+      authorized_key:
+        user: deploy
         state: present
+        key: "{{ item }}"
+      with_items: "{{ deploy_keys }}"
+
+    - name: "Remove 'default' vhost"
+      file:
+        path: '/etc/nginx/sites-enabled/default'
+        state: absent
+      notify: reload nginx
+
+    - name: "main: create dirs"
+      file:
+        path: "/var/www/main/{{ item }}"
+        recurse: true
+        owner: deploy
+        group: deploy
+        state: directory
+      with_items:
+        - "current"
+        - "shared"
+        - "shared/config"
+        - "tmp/letsencrypt"
+
+    - name: "main: create dirs for root"
+      file:
+        path: "/var/www/main/{{ item }}"
+        recurse: true
+        owner: root
+        group: root
+      with_items:
+        - "shared/ssl"
+
+    - name: "Cert: Check if letsencrypt certificate is present"
+      stat:
+        path: "/etc/letsencrypt/renewal/{{ main_domain }}.conf"
+      register: cert_installed
+
+    - name: "Cert: install SSL package for snakeoil certs"
+      apt:
+        name: ssl-cert
+
+    - name: "Cert: Link snakeoil cert"
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        state: link
+        owner: root
+        group: root
+      when:
+        - not cert_installed.stat.exists
+      with_items:
+        - { src: /etc/ssl/certs/ssl-cert-snakeoil.pem, dest: "/var/www/main/shared/ssl/fullchain.pem" }
+        - { src: /etc/ssl/private/ssl-cert-snakeoil.key, dest: "/var/www/main/shared/ssl/privkey.pem" }
+
+    - name: "main: main define vhost"
+      template:
+        src: nginx_vhost.j2
+        dest: "/etc/nginx/sites-available/main"
+        force: yes
+        owner: root
+        group: root
+        mode: 0644
+      notify: restart nginx
+
+    - name: "main: enable vhost"
+      file:
+        src: "/etc/nginx/sites-available/main"
+        dest: "/etc/nginx/sites-enabled/main"
+        state: link
+        force: yes
+        owner: root
+        group: root
+        mode: 0644
+      notify: restart nginx
+
+    - meta: flush_handlers # Ensure the new or changed vhost is used before
+                           # obtaining the certificate on this domain.
+
+    - name: Obtain initial certificate
+      shell: "certbot certonly --webroot -n -w /var/www/main/tmp/letsencrypt/ -d {{ main_domain }} -m {{ certbot_admin_email }} --agree-tos"
+
+    - name: "Cert: Link letsencrypt cert"
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        state: link
+      with_items:
+        - { src: "/etc/letsencrypt/live/{{ main_domain }}/fullchain.pem", dest: "/var/www/main/shared/ssl/fullchain.pem" }
+        - { src: "/etc/letsencrypt/live/{{ main_domain }}/privkey.pem", dest: "/var/www/main/shared/ssl/privkey.pem" }
+      notify: restart nginx
+
+    - name: "Ensure the systemd certbot renew timer reloads nginx"
+      lineinfile:
+        path: /lib/systemd/system/certbot.service
+        regexp: '^ExecStart='
+        line: 'ExecStart=/usr/bin/certbot renew --quiet --post-hook "systemctl nginx reload"'
