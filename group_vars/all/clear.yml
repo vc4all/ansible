@@ -28,10 +28,10 @@ additional_packages:
 
 apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
 
-# jitsi_domain: beeldbellen.vc4all.nl
-jitsi_domain: meet.webschuur.com
-# main_domain: vc4all.nl
-main_domain: meetroot.webschuur.com
+jitsi_domain: beeldbellen.vc4all.nl
+# jitsi_domain: meet.webschuur.com
+main_domain: vc4all.nl
+#main_domain: meetroot.webschuur.com
 
 ## Jitsi role needs this.
 certbot_enabled: true
