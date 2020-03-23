@@ -59,6 +59,11 @@
 - name: "Update the activated plugins through munin's autoconfiguration."
   shell: "munin-node-configure --shell --remove-also 2>/dev/null | sh || /bin/true"
 
+- name: "Restart munin-node after configuring plugins"
+  service:
+    name: munin-node
+    state: restarted
+
 - name: "Create a State directory"
   file:
     name: "/var/lib/munin-node/plugin-state/"
