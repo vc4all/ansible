@@ -1,0 +1,102 @@
+---
+  - name: Sysadmins
+    include_role:
+      name: sysadmins
+
+  - name: Install required packages
+    apt:
+      name: 
+        - build-essential
+        - fail2ban
+        - git
+        - htop
+        - nethogs
+        - tree
+        - ufw
+        - unattended-upgrades
+        - vim
+      state: present
+      update_cache: yes
+
+  - name: Install additional packages
+    apt:
+      name: "{{ additional_packages }}"
+      state: present
+      update_cache: yes
+
+  - name: "Firewall: allow ssh"
+    ufw:
+      rule: allow
+      name: OpenSSH
+  - name: "Firewall: block all incoming"
+    ufw:
+      state: enabled
+      policy: reject
+      direction: incoming
+  - name: "Firewall: block blacklist IPs"
+    ufw:
+      rule: deny
+      proto: any
+      insert: 1
+      src: "{{ item }}"
+    with_items: "{{ firewall_blacklist }}"
+  - name: "Firewall: remove old blacklist IPs"
+    ufw:
+      delete: yes
+      rule: deny
+      proto: any
+      src: "{{ item }}"
+    with_items: "{{ firewall_remove_blacklist }}"
+
+  - name: "set hostname"
+    hostname:
+      name: "{{ inventory_hostname }}"
+
+  - name: "Configure automatic unnatended upgrades to remove kernel packages"
+    lineinfile:
+      path: /etc/apt/apt.conf.d/50unattended-upgrades
+      regexp: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages'
+      line: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
+
+  - name: "Configure automatic unnatended upgrades to autoremove"
+    lineinfile:
+      path: /etc/apt/apt.conf.d/50unattended-upgrades
+      regexp: 'Unattended-Upgrade::Remove-Unused-Dependencies'
+      line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
+
+  - name: "Swap: write swap file"
+    command: "fallocate -l {{ swapfile_size }} {{ swapfile_file }}"
+    args:
+      creates: "{{ swapfile_file }}"
+      warn: false
+    register: _write_swapfile
+
+  - name: "Swap: set swap file permissions"
+    file:
+      path: "{{ swapfile_file }}"
+      owner: root
+      group: root
+      mode: 0600
+
+  - name: "Swap: create swap file"
+    command: "mkswap {{ swapfile_file }}"
+    args:
+      warn: false
+    register: _create_swapfile
+    when: _write_swapfile.changed
+
+  - name: "Swap: enable swapfile"
+    command: "swapon {{ swapfile_file }}"
+    args:
+      warn: false
+    when: _create_swapfile is changed
+
+  - name: "Swap: add swapfile to /etc/fstab"
+    mount:
+      name: none
+      src: "{{ swapfile_file }}"
+      fstype: swap
+      opts: sw
+      passno: '0'
+      dump: '0'
+      state: present

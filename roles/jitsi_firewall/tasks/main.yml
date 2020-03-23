@@ -1,0 +1,16 @@
+---
+- name: "Firewall: Allow HTTP/HTTPS port"
+  ufw:
+    rule: allow
+    name: Nginx full
+    
+- name: "Firewall: allow VideoBridge TCP"
+  ufw:
+    rule: allow
+    port: "{{ jitsi_tcp_harvester_port }}"
+    proto: tcp
+- name: "Firewall: allow VideoBridge UDP"
+  ufw:
+    rule: allow
+    port: 10000
+    proto: udp

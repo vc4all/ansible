@@ -1,0 +1,71 @@
+##
+# Installs and configures munin.
+#
+# Taken from Mailinabox munin setup (which is very good).
+# https://github.com/mail-in-a-box/mailinabox/blob/master/setup/munin.sh
+#
+# Works on Ubuntu 18.04
+---
+- name: "Install passlib for passwdfile management"
+  apt:
+    name: python3-passlib
+    state: present
+
+- name: "Set password access for munin"
+  htpasswd:
+    path: /etc/nginx/passwdfile
+    name: "{{ item.key }}"
+    password: "{{ item.value.munin_password }}"
+    owner: root
+    group: www-data
+    mode: 0640
+  with_dict: "{{ users }}"
+
+- name: "Install packages"
+  apt:
+    name:
+      - munin
+      - munin-node
+      - libcgi-fast-perl # is needed by /usr/lib/munin/cgi/munin-cgi-graph
+
+- name: "Configure munin"
+  template:
+    src: munin.conf.j2
+    dest: /etc/munin/munin.conf
+    owner: root
+    group: root
+    backup: yes
+
+- name: "Configure munin-node: host_name"
+  lineinfile:
+    path: /etc/munin/munin-node.conf
+    regexp: "^host_name .*"
+    line: "host_name {{ main_domain }}"
+
+- name: "Configure munin-node: log_level"
+  lineinfile:
+    path: /etc/munin/munin-node.conf
+    regexp: "^log_level .*"
+    line: "log_level 1"
+
+- name: "Set permissions on log directory and -files"
+  file:
+    name: "/var/log/munin/"
+    owner: munin
+    recurse: true
+    state: directory
+
+  # TODO: port to a cleaner setup. We probably want to get the end-state instead
+- name: "Update the activated plugins through munin's autoconfiguration."
+  shell: "munin-node-configure --shell --remove-also 2>/dev/null | sh || /bin/true"
+
+- name: "Restart munin-node after configuring plugins"
+  service:
+    name: munin-node
+    state: restarted
+
+- name: "Create a State directory"
+  file:
+    name: "/var/lib/munin-node/plugin-state/"
+    state: directory
+    recurse: true

@@ -1,0 +1,12 @@
+all:
+  hosts:
+    136-144-205-16.colo.transip.net:
+      # force use of python 3 on ubuntu 18.04
+      # https://stackoverflow.com/a/41431540/73673
+      ansible_python_interpreter: /usr/bin/python3
+ubuntu:
+  hosts:
+    136-144-205-16.colo.transip.net:
+jitsi:
+  hosts:
+    136-144-205-16.colo.transip.net:
