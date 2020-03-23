@@ -62,7 +62,22 @@ server {
     ssl_certificate     /var/www/main/shared/ssl/fullchain.pem;
     ssl_certificate_key /var/www/main/shared/ssl/privkey.pem;
 
-    root /var/www/main/current/;
+    location /munin/ {
+      alias /var/cache/munin/www/;
+      auth_basic "Munin Monitoring";
+      auth_basic_user_file /etc/nginx/passwdfile;
+    }
+
+    location /munin/static/ {
+      alias /etc/munin/static/;
+      expires 31d;
+      auth_basic "Munin Monitoring";
+      auth_basic_user_file /etc/nginx/passwdfile;
+    }
+
+    location / {
+      root /var/www/main/current/;
+    }
 
     ssi on;
     index index.html index.htm;
