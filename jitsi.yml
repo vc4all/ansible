@@ -105,6 +105,8 @@
 
     - name: Obtain initial certificate
       shell: "certbot certonly --webroot -n -w /var/www/main/tmp/letsencrypt/ -d {{ main_domain }} -d www.{{ main_domain }} -m {{ certbot_admin_email }} --agree-tos"
+      when:
+        - not cert_installed.stat.exists
 
     - name: "Cert: Link letsencrypt cert"
       file:
