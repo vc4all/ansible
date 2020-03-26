@@ -20,7 +20,9 @@ swapfile_file: "/swap"
 swapfile_size: "1G"
 
 firewall_blacklist:
+  -
 firewall_remove_blacklist:
+  -
 
 additional_packages:
   - nethogs
