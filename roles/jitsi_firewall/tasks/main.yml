@@ -12,5 +12,5 @@
 - name: "Firewall: allow VideoBridge UDP"
   ufw:
     rule: allow
-    port: 10000
+    port: "10000"
     proto: udp

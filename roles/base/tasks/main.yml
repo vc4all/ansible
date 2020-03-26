@@ -6,6 +6,7 @@
   - name: Install required packages
     apt:
       name: 
+        - aptitude # For ansible
         - build-essential
         - fail2ban
         - git
