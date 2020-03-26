@@ -29,6 +29,22 @@
         key: "{{ item }}"
       with_items: "{{ deploy_keys }}"
 
+    - name: "Nginx: add anonymized log"
+      template:
+        src: anonymized_logs.conf.j2
+        dest: '/etc/nginx/conf.d/anonymized_logs.conf'
+        owner: root
+        group: root
+        mode: 0644
+      notify: restart nginx
+
+    - name: 'Nginx: deactivate default logs in main conf'
+      replace:
+        path: /etc/nginx/nginx.conf
+        regexp: 'access_log /var/log/nginx/access.log;'
+        replace: '# access_log /var/log/nginx/access.log;'
+      notify: restart nginx
+
     - name: "Remove 'default' vhost"
       file:
         path: '/etc/nginx/sites-enabled/default'
