@@ -123,3 +123,12 @@
         path: /lib/systemd/system/certbot.service
         regexp: '^ExecStart='
         line: 'ExecStart=/usr/bin/certbot renew --quiet --post-hook "systemctl nginx reload"'
+
+    - name: "Ensure {{ item }} gets a restart"
+      service:
+        name: "{{ item }}"
+        state: restarted
+      with_items: 
+        - prosody
+        - jicofo
+        - jitsi-videobridge
