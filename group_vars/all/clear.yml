@@ -30,15 +30,6 @@ additional_packages:
 
 apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
 
-jitsi_domain: beeldbellen.vc4all.nl
-# jitsi_domain: meet.webschuur.com
-main_domain: vc4all.nl
-#main_domain: meetroot.webschuur.com
-
 ## Jitsi role needs this.
 certbot_enabled: true
 certbot_admin_email: ber@berk.es
-
-jitsi_nat: false
-jitsi_nat_public_ip: 136.144.205.16 # quiet-gibson.webschuur.com
-jitsi_nat_private_ip: 10.133.59.8
