@@ -34,6 +34,7 @@ apt_mirror: http://ftp.snt.utwente.nl/pub/os/linux/ubuntu/
 certbot_enabled: true
 certbot_admin_email: ber@berk.es
 
+use_custom_jitsi_config_vars: true
 jitsi_config:
   hosts:
     domain: "{{ jitsi_domain }}"
