@@ -1,0 +1,19 @@
+##
+# Installs jitsi services and a SSL enabled nginx as proxy.
+---
+- hosts: jitsi
+  become: "yes"
+  tasks:
+    - name: "Set announcement"
+      lineinfile:
+        path: /etc/jitsi/meet/{{ jitsi_domain }}-config.js
+        regexp: "^config.noticeMessage"
+        insertafter: "^};$"
+        line: "config.noticeMessage = '{{ notice_message }}';"
+      when: "{{ notice_message is defined }}"
+    - name: "Remove announcement"
+      lineinfile:
+        path: /etc/jitsi/meet/{{ jitsi_domain }}-config.js
+        state: absent
+        regexp: "^config.noticeMessage"
+      when: "{{ notice_message is not defined }}"
