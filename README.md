@@ -45,6 +45,24 @@ into this issue: https://github.com/ansible/ansible/issues/14426
 
 ### Run
 
+#### Set notice message
+
+`announce.yml` is a playbook to push a notice message for e.g. maintainance
+downtime to users.
+
+When a variable `notice_message` is set, it sets that, when not set, it
+removes the `notice_message`.
+
+e.g. to set a notice message on one server:
+`ansible-playbook --ask-become-pass -l quiet-gibson.webschuur.com --extra-vars="notice_message='The service will be down for maintainance at 11:00 GMT'" announce.yml`
+
+And to remove:
+`ansible-playbook --ask-become-pass -l quiet-gibson.webschuur.com announce.yml`
+
+Note that running the normal `jitsi.yml` will also remove any notice
+messages, unless they are explicitly defined in the configuration
+settings.
+
 ### Test
 
 ### Release
