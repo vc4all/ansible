@@ -151,6 +151,11 @@
         regexp: 'OPTIMAL_BROWSERS:.*'
         line: "OPTIMAL_BROWSERS: [ 'chrome', 'chromium', 'nwjs', 'electron' ],"
 
+    - name: "Configure jitsi-meet: overwrite dutch with own language"
+        src: templates/main-nl.json
+        dest: /usr/share/jitsi-meet/lang/main-nl.json
+        backup: yes
+
     - name: "Configure jitsi-meet: JITSI_WATERMARK_LINK"
       lineinfile:
         regexp: 'JITSI_WATERMARK_LINK:.*'
