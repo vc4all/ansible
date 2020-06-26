@@ -27,15 +27,15 @@
 
 - name: Pre-configure jitsi-videobridge package
   debconf:
-    name: jitsi-videobridge
-    question: jitsi-videobridge/jvb-hostname
+    name: jitsi-videobridge2
+    question: jitsi-videobridge2/jvb-hostname
     value: "{{ jitsi_domain }}"
     vtype: string
 - name: Install jitsi-videobridge2
   apt:
     name: jitsi-videobridge2
     state: present
-- name: Port 4443 for jitsi-videobridge
+- name: Port 4443 for jitsi-videobridge2
   template:
     src: sip-communicator.properties.j2
     dest: /etc/jitsi/videobridge/sip-communicator.properties
@@ -43,7 +43,7 @@
 - when: jitsi_videobridge_sip_communicator.changed # noqa 503
   name: Restart jitsi-videobridge
   service:
-    name: jitsi-videobridge
+    name: jitsi-videobridge2
     state: restarted
 
 - name: Install jicofo

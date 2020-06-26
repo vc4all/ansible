@@ -1,6 +1,6 @@
 - name: restart_jitsi
   service:
-    name: jitsi-videobridge
+    name: jitsi-videobridge2
     state: restarted
 - name: restart_nginx
   service:
