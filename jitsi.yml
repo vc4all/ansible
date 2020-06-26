@@ -152,6 +152,7 @@
         line: "OPTIMAL_BROWSERS: [ 'chrome', 'chromium', 'nwjs', 'electron' ],"
 
     - name: "Configure jitsi-meet: overwrite dutch with own language"
+      copy:
         src: templates/main-nl.json
         dest: /usr/share/jitsi-meet/lang/main-nl.json
         backup: yes
