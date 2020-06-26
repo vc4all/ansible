@@ -140,6 +140,11 @@
         regexp: '^ExecStart='
         line: 'ExecStart=/usr/bin/certbot renew --quiet --post-hook "systemctl nginx reload"'
 
+    - name: "Configure jitsi-meet: OPTIMAL_BROWSERS"
+      lineinfile:
+        regexp: 'OPTIMAL_BROWSERS:.*'
+        line: "OPTIMAL_BROWSERS: [ 'chrome', 'chromium', 'nwjs', 'electron' ],"
+
     - name: "Ensure {{ item }} gets a restart"
       service:
         name: "{{ item }}"
