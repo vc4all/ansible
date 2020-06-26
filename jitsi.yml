@@ -140,10 +140,21 @@
         regexp: '^ExecStart='
         line: 'ExecStart=/usr/bin/certbot renew --quiet --post-hook "systemctl nginx reload"'
 
+    - name: "Configure jitsi-meet: overwrite watermark"
+      copy:
+        src: templates/watermark.png
+        dest: /usr/share/jitsi-meet/images/watermark.png
+        backup: yes
+
     - name: "Configure jitsi-meet: OPTIMAL_BROWSERS"
       lineinfile:
         regexp: 'OPTIMAL_BROWSERS:.*'
         line: "OPTIMAL_BROWSERS: [ 'chrome', 'chromium', 'nwjs', 'electron' ],"
+
+    - name: "Configure jitsi-meet: JITSI_WATERMARK_LINK"
+      lineinfile:
+        regexp: 'JITSI_WATERMARK_LINK:.*'
+        line: "JITSI_WATERMARK_LINK: 'https://vc4all.nl'"
 
     - name: "Ensure {{ item }} gets a restart"
       service:
